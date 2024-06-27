@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
-import './App.css'
-import DisplayPosts from './components/post/post'
+import './App.css';
+import DisplayPosts from './components/post/post';
+import NavBar from './components/navbar/navbar';
 
 export default function App() {
+    const [token, setToken] = useState(localStorage.getItem('token'))
     const [posts, setPosts] = useState(null)
     const [err, setErr] = useState(null)
     useEffect(() => {
@@ -21,7 +23,7 @@ export default function App() {
     }, [])
     return (
         <div>
-            <header>posts</header>
+            <NavBar token={token}></NavBar>
             {(err === null && posts !== null) && <DisplayPosts posts={posts}></DisplayPosts>}
         </div>
     )
