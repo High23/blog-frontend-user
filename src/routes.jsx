@@ -1,5 +1,6 @@
 import App from "./App";
 import ErrorPage from "./components/errorpage/errorpage.jsx";
+import LogIn from "./components/login/login.jsx";
 
 const routes = [
     {
@@ -9,7 +10,7 @@ const routes = [
     },
     {
         path: "login",
-        element: <App></App>,
+        element: <LogIn></LogIn>,
         errorElement: <ErrorPage></ErrorPage>,
     },
     {
