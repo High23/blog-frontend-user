@@ -2,6 +2,8 @@ import App from "./App";
 import ErrorPage from "./components/errorpage/errorpage.jsx";
 import LogIn from "./components/login/login.jsx";
 import SignUp from "./components/sign-up/sign-up.jsx";
+import User from "./components/user/user.jsx";
+import LogOut from "./components/logout/logout.jsx";
 
 const routes = [
     {
@@ -15,8 +17,18 @@ const routes = [
         errorElement: <ErrorPage></ErrorPage>,
     },
     {
+        path: "logout",
+        element: <LogOut></LogOut>,
+        errorElement: <ErrorPage></ErrorPage>,
+    },
+    {
         path: "sign-up",
         element: <SignUp></SignUp>,
+        errorElement: <ErrorPage></ErrorPage>,
+    },
+    {
+        path: "user",
+        element: <User></User>,
         errorElement: <ErrorPage></ErrorPage>,
     },
     {
