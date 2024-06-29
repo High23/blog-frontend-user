@@ -28,7 +28,7 @@ export default function LogIn() {
     }, [])
     return (
         <>
-            <NavBar></NavBar>
+            <NavBar token={token}></NavBar>
             {(status === 200 || status === null) && <LogInForm siteUrl={siteUrl} navigate={navigate}></LogInForm>}
         </>
     )
@@ -69,7 +69,7 @@ function LogInForm({siteUrl, navigate}) {
                 <div>
                     <label htmlFor="password">Password: </label>
                     {errors === 'Invalid password' && <div>{errors}</div>}
-                    <input type="password" name="password" id="password"  minLength={7} required />
+                    <input type="password" name="password" id="password" minLength={7} required />
                 </div>
                 <button>Log In</button>
             </form>
@@ -77,7 +77,6 @@ function LogInForm({siteUrl, navigate}) {
         </>
     )
 }
-
 
 function LoginErrors({errors}) {
     return (

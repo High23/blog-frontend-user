@@ -14,7 +14,7 @@ export default function SignUp() {
     
     return (
         <>
-            <NavBar></NavBar>
+            <NavBar token={token}></NavBar>
             {token === null && <SignUpForm navigate={navigate}></SignUpForm>}
         </>
     )
