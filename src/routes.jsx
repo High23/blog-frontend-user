@@ -32,12 +32,12 @@ const routes = [
         errorElement: <ErrorPage></ErrorPage>
     },
     {
-        path: "user/edit",
+        path: "user/:userId/edit",
         element: <EditCurrentUser></EditCurrentUser>,
         errorElement: <ErrorPage></ErrorPage>,
     },
     {
-        path: "user/:params",
+        path: "user/:userId",
         element: <User></User>,
         errorElement: <ErrorPage></ErrorPage>,
     },
