@@ -2,7 +2,7 @@ import App from "./App";
 import ErrorPage from "./components/errorpage/errorpage.jsx";
 import LogIn from "./components/login/login.jsx";
 import SignUp from "./components/sign-up/sign-up.jsx";
-import User from "./components/user/user.jsx";
+import { CurrentUser, User, EditCurrentUser } from "./components/user/user.jsx";
 import LogOut from "./components/logout/logout.jsx";
 
 const routes = [
@@ -28,6 +28,16 @@ const routes = [
     },
     {
         path: "user",
+        element: <CurrentUser></CurrentUser>,
+        errorElement: <ErrorPage></ErrorPage>
+    },
+    {
+        path: "user/edit",
+        element: <EditCurrentUser></EditCurrentUser>,
+        errorElement: <ErrorPage></ErrorPage>,
+    },
+    {
+        path: "user/:params",
         element: <User></User>,
         errorElement: <ErrorPage></ErrorPage>,
     },
