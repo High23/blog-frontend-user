@@ -25,7 +25,7 @@ export default function LogIn() {
             }
         }
         checkIfLoggedIn()
-    }, [])
+    })
     return (
         <>
             <NavBar token={token}></NavBar>
@@ -48,7 +48,6 @@ function LogInForm({siteUrl, navigate}) {
             body: data,
         });
         const info = await response.json()
-        
         if (response.status >= 400) {
             setErrors(info.loginError);
         } else if (info.errors) {
@@ -58,6 +57,7 @@ function LogInForm({siteUrl, navigate}) {
             navigate("/", {replace: true});
         }
     }
+
     return (
         <>
             <form action="" method='post' onSubmit={(form) => {formSubmission(form)}}>
@@ -73,7 +73,7 @@ function LogInForm({siteUrl, navigate}) {
                 </div>
                 <button>Log In</button>
             </form>
-            {errors !== null && <LoginErrors errors={errors}></LoginErrors>}
+            {(errors !== null && Array.isArray(errors)) && <LoginErrors errors={errors}></LoginErrors>}
         </>
     )
 }
