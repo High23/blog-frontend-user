@@ -4,7 +4,6 @@ import { useParams, useNavigate } from 'react-router-dom'
 import NavBar from '../navbar/navbar'
 
 export function CurrentUser() {
-    const siteUrl = import.meta.env.VITE_SITEURL
     const [currentUser, setCurrentUser] = useState(null)
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate()
@@ -13,7 +12,7 @@ export function CurrentUser() {
             throw new Error('You can not access this page');
         }
         async function fetchCurrentUser() {
-            const response = await fetch(siteUrl + 'user', {
+            const response = await fetch(import.meta.env.VITE_SITEURL + 'user', {
                 headers: {
                     "Authorization": "Bearer " + token
                 }
@@ -41,12 +40,50 @@ export function CurrentUser() {
 }
 
 export function EditCurrentUser() {
-    const [errors, setErrors] = useState(null);
+    const [user, setUser] = useState(undefined)
+    const [fetchError, setFetchError] = useState(null);
     const navigate = useNavigate();
-    const token = localStorage.getItem('token');
+    const [token, setToken] = useState(localStorage.getItem('token'));
     const params = useParams()
     const siteUrl = import.meta.env.VITE_SITEURL + `/user/${params.userId}/edit`;
 
+    useEffect(() => {
+        async function checkIfCurrentUser() {
+            const response = await fetch(siteUrl, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Authorization": "Bearer " + token
+                }
+            });
+            const data = await response.json()
+            if (response.status !== 200) {
+                setFetchError(data.error);
+                setTimeout(() => {
+                    navigate('/logout', {replace: true});
+                }, 3000);
+            } else {
+                setUser(data.user)
+            }
+        }
+        checkIfCurrentUser()
+    }, [token])
+
+    return (
+        <>
+            <NavBar token={token}></NavBar>
+            <EditForm siteUrl={siteUrl} token={token} setToken={setToken} navigate={navigate} user={user}></EditForm>
+            {fetchError !== null &&
+            <p>
+                An fetch error has occurred. Error: {fetchError}. Logging you out.
+            </p>
+            }
+        </>
+    )
+}
+
+function EditForm({siteUrl, token, setToken, navigate, user}) {
+    const [errors, setErrors] = useState(null);
     async function formSubmission(form) {
         form.preventDefault();
         const formData = new FormData(form.target);
@@ -65,31 +102,39 @@ export function EditCurrentUser() {
             setErrors(info.errors);
         } else {
             localStorage.setItem('token', info.token);
-            navigate("/user", {replace: true});
+            setToken(info.token)
+            navigate('/user', {replace: true})
         }
     }
-
     return (
         <>
-            <NavBar token={token}></NavBar>
+        {
+            user !== undefined &&
             <form action="" method='post' onSubmit={(form) => {formSubmission(form)}}>
                 <div>
-                    <label htmlFor="username">New username: </label>
+                    <label htmlFor="username">Username: </label>
                     {errors === 'Username does not exist.' && <div>{errors}</div>}
-                    <input type="text" name="username" id="username"/>
+                    <input type="text" name="username" id="username" min={1} maxLength={100} defaultValue={user.username === undefined ? '' : user.username} required/>
                 </div>
                 <div>
-                    <label htmlFor="password">New password: </label>
+                    <label htmlFor="password">Password: </label>
                     {errors === 'Invalid password' && <div>{errors}</div>}
-                    <input type="password" name="password" id="password" autoComplete='off' />
+                    <input type="password" name="password" id="password" autoComplete='off' min={7} />
                 </div>
                 <div>
                     <label htmlFor="authorCheckBox">Author: </label>
                     {errors === 'Invalid password' && <div>{errors}</div>}
-                    <input type="checkbox" name="authorCheckBox" id="authorCheckBox"/>
+                    { user.author ? 
+                    <>
+                        <input type="checkbox" name="authorCheckBox" id="authorCheckBox" defaultChecked/>
+                    </> : 
+                    <>
+                        <input type="checkbox" name="authorCheckBox" id="authorCheckBox" />
+                    </>}
                 </div>
                 <button>Save Changes</button>
             </form>
+        }
         </>
     )
 }
