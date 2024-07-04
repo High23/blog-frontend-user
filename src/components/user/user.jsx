@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './user.css'
 import { useParams, useNavigate } from 'react-router-dom'
 import NavBar from '../navbar/navbar'
@@ -148,5 +148,3 @@ export function User() {
         </>
     )
 }
-
-export default { CurrentUser, User, EditCurrentUser }

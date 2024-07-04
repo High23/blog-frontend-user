@@ -22,14 +22,13 @@ export default function SignUp() {
 
 function SignUpForm({navigate}) {
     const [errors, setErrors] = useState(null);
-    const siteUrl = import.meta.env.VITE_SITEURL
 
     async function formSubmission(form) {
         form.preventDefault();
         const formData = new FormData(form.target);
         const data = `username=${formData.get('username')}&password=${formData.get('password')}&confirmPassword=${formData.get('confirmPassword')}&author=${formData.get('authorCheckBox')}`;
         console.log(data)
-        const response = await fetch(siteUrl + 'sign-up', {
+        const response = await fetch(import.meta.env.VITE_SITEURL + 'sign-up', {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
