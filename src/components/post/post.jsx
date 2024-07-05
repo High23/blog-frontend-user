@@ -121,4 +121,22 @@ function Post() {
     )
 }
 
-export { DisplayPosts, Post }
+function CreatePost() {
+    const token = localStorage.getItem('token')
+    return (
+        <>
+            <NavBar token={token}></NavBar>
+            <CreateForm></CreateForm>
+        </>
+    )
+}
+
+function CreateForm() {
+    return (
+        <form>
+            input
+        </form>
+    )
+}
+
+export { DisplayPosts, Post, CreatePost }
