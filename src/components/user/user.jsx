@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react'
 import './user.css'
 import { useParams, useNavigate } from 'react-router-dom'
 import NavBar from '../navbar/navbar'
+import { UTCDate } from '@date-fns/utc';
+import { format } from 'date-fns';
 
 export function CurrentUser() {
     const [currentUser, setCurrentUser] = useState(null)
     const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate()
+
     useEffect(() => {
         if (token === null) {
             throw new Error('You can not access this page');
@@ -27,13 +30,16 @@ export function CurrentUser() {
         <>
             <NavBar token={token}></NavBar>
             { (currentUser !== null) && 
-            <div> 
-                <h3>Username: { currentUser.username }</h3>
-                <div>Author status: { currentUser.author === false ? "Not an author" : "Is an author" }</div>
-                <button type="button" onClick={() => {
-                    navigate(`${currentUser._id}/edit`)
-                }}>Edit user </button>
-            </div>
+            <>
+                <div> 
+                    <h3>Username: { currentUser.username }</h3>
+                    <div>Author status: { currentUser.author === false ? "Not an author" : "Is an author" }</div>
+                    <button type="button" onClick={() => {
+                        navigate(`${currentUser._id}/edit`)
+                    }}>Edit user </button>
+                </div>
+                <ShowPostsOrComments userId={currentUser._id}></ShowPostsOrComments>
+            </>
             }
         </>
     )
@@ -84,6 +90,7 @@ export function EditCurrentUser() {
 
 function EditForm({siteUrl, token, setToken, navigate, user}) {
     const [errors, setErrors] = useState(null);
+
     async function formSubmission(form) {
         form.preventDefault();
         const formData = new FormData(form.target);
@@ -106,6 +113,7 @@ function EditForm({siteUrl, token, setToken, navigate, user}) {
             navigate('/user', {replace: true})
         }
     }
+
     return (
         <>
         {
@@ -140,11 +148,85 @@ function EditForm({siteUrl, token, setToken, navigate, user}) {
 }
 
 export function User() {
+    const [user, setUser] = useState(null)
+    const params = useParams()
     const token = localStorage.getItem('token');
+
+    useEffect(() => {
+        async function fetchUser() {
+            const response = await fetch(import.meta.env.VITE_SITEURL + `user/${params.userId}`);
+            const data = await response.json()
+            setUser(data.user)
+        }
+        fetchUser()
+    }, []);
+
     return (
         <>
             <NavBar token={token}></NavBar>
-            <p>Random user info</p>
+            { (user !== null) && 
+            <>
+                <div> 
+                    <h3>Username: { user.username }</h3>
+                    <div>Author status: { user.author === false ? "Not an author" : "Is an author" }</div>
+                </div>
+                <ShowPostsOrComments userId={params.userId}></ShowPostsOrComments>
+            </>
+            }
+        </>
+    )
+}
+
+function ShowPostsOrComments({ userId }) {
+    const [data, setData] = useState(null);
+    const navigate = useNavigate()
+    
+    async function getPostsOrComments(btnClicked) {
+        const response = await fetch(import.meta.env.VITE_SITEURL + `user/${userId}/${btnClicked}`)
+        const fetchData = await response.json()
+        if (fetchData.userPosts) {
+            setData(fetchData.userPosts)
+        } else if (fetchData.userComments) {
+            setData(fetchData.userComments)
+        }
+    }
+
+    return (
+        <>
+            <div>
+                <button type="button" className='user-buttons' onClick={() => {
+                    getPostsOrComments('posts')
+                }}>Posts</button>
+                <button type="button" className='user-buttons' onClick={() => {
+                    getPostsOrComments('comments')
+                }}>Comments</button>
+            </div>
+            <section>
+                {data !== null && data.map((info) => {
+                    return (
+                        <div key={ info._id }>
+                            { info.title && 
+                            <>
+                                <h3 className='post-title clickable' onClick={() => {
+                                    navigate(`/post/${info._id}`, {replace: true})
+                                }}>{info.title}</h3>
+                            </>
+                            }
+                            { info.post && 
+                            <>
+                                <h4>Posted on: 
+                                    <span className='post-title clickable' onClick={() => {
+                                        navigate(`/post/${info.post._id}`, {replace: true})
+                                    }}> {info.post.title}</span>
+                                </h4>
+                            </>
+                            }
+                            <div>Created on: {format(new UTCDate(info.date), 'LL/dd/yy KK:mm a')} UTC</div>
+                            <p className='user-comment'>{info.text}</p>
+                        </div>
+                    )
+                })} 
+            </section>
         </>
     )
 }
