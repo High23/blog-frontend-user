@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { format } from 'date-fns';
-import { UTCDate } from '@date-fns/utc';
+import { formatDistanceToNow } from 'date-fns';
 
 export default function CommentForm({data, formSubmission}) {
     const navigate = useNavigate()
@@ -20,7 +19,7 @@ export default function CommentForm({data, formSubmission}) {
                     <h4 className='username clickable' onClick={() => {
                             navigate(`/user/${comment.author._id}`);
                     }}>{comment.author.username}</h4>
-                    <div>{format(new UTCDate(comment.date), 'LL/dd/yy KK:mm a')} UTC</div>
+                    <div>{formatDistanceToNow(comment.date)} ago</div>
                     <p>{comment.text}</p>
                 </div>
             )
