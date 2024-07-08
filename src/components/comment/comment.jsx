@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { format } from 'date-fns';
+import { UTCDate } from '@date-fns/utc';
 
 export default function CommentForm({data, formSubmission}) {
     const navigate = useNavigate()
@@ -19,7 +21,7 @@ export default function CommentForm({data, formSubmission}) {
                     <h4 className='username clickable' onClick={() => {
                             navigate(`/user/${comment.author._id}`);
                     }}>{comment.author.username}</h4>
-                    <div>{comment.date}</div>
+                    <div>{format(new UTCDate(comment.date), 'LL/dd/yy KK:mm a')} UTC</div>
                     <p>{comment.text}</p>
                 </div>
             )

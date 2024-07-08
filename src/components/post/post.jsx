@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import CommentForm from '../comment/comment';
 import NavBar from '../navbar/navbar';
 import './post.css'
+import { format } from 'date-fns';
+import { UTCDate } from '@date-fns/utc';
 
 function DisplayPosts({posts, error}) {
     const navigate = useNavigate();
@@ -16,8 +18,8 @@ function DisplayPosts({posts, error}) {
                     }}>
                         <div>{post.title}</div>
                         <div>{post.text}</div>
-                        <div>Date Posted: {post.date}</div>
-                        <div>Last Updated: {post.lastUpdated}</div>
+                        <div>Date posted: {format(new UTCDate(post.date), 'LL/dd/yy KK:mm a')} UTC</div>
+                        { post.lastUpdated && <div>Last Updated: {format(new UTCDate(post.lastUpdated), 'LL/dd/yy KK:mm a')} UTC</div> }
                         <div>By {post.author.username}</div>
                     </div>
                 )
@@ -78,7 +80,7 @@ function Post() {
             setErrors(info.errors);
         } 
     }
-
+    
     return (
         <>
             <NavBar token={token}></NavBar>
@@ -89,7 +91,8 @@ function Post() {
                         <h4 className='username clickable' onClick={() => {
                                 navigate(`/user/${data.post.author._id}`);
                             }}>{data.post.author.username}</h4>
-                        <div>{data.post.date}</div>
+                        <div>{format(new UTCDate(data.post.date), 'LL/dd/yy KK:mm a')} UTC</div>
+                        { data.post.lastUpdated && <div>Last Updated: {format(new UTCDate(data.post.lastUpdated), 'LL/dd/yy KK:mm a')} UTC</div> }
                         <p>{data.post.text}</p>
                     </section>
                     <CommentForm data={data} formSubmission={formSubmission}></CommentForm>
