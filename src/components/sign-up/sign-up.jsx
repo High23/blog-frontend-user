@@ -27,7 +27,6 @@ function SignUpForm({navigate}) {
         form.preventDefault();
         const formData = new FormData(form.target);
         const data = `username=${formData.get('username')}&password=${formData.get('password')}&confirmPassword=${formData.get('confirmPassword')}&author=${formData.get('authorCheckBox')}`;
-        console.log(data)
         const response = await fetch(import.meta.env.VITE_SITEURL + 'sign-up', {
             method: "POST",
             headers: {
@@ -63,7 +62,6 @@ function SignUpForm({navigate}) {
                 </div>
                 <div>
                     <label htmlFor="authorCheckBox">Author: </label>
-                    {errors === 'Invalid password' && <div>{errors}</div>}
                     <input type="checkbox" name="authorCheckBox" id="authorCheckBox"/>
                 </div>
                 <button>Log In</button>

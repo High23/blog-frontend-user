@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import './navbar.css'
 
@@ -21,7 +21,6 @@ export default function NavBar({token}) {
                 navigate('/logout', {replace: true});
                 return;
             }
-            console.log(data)
             setCurrentUser(data.user)
         }
 

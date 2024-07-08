@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import CommentForm from '../comment/comment';
 import NavBar from '../navbar/navbar';
 import './post.css'
 import { format } from 'date-fns';
 import { UTCDate } from '@date-fns/utc';
 
-function DisplayPosts({posts, error}) {
+function DisplayPosts({posts}) {
     const navigate = useNavigate();
     
     return (
@@ -80,7 +80,7 @@ function Post() {
             setErrors(info.errors);
         } 
     }
-    
+
     return (
         <>
             <NavBar token={token}></NavBar>
