@@ -13,7 +13,7 @@ export default function CommentForm({data, formSubmission}) {
                 }}/>
                 <button>Comment</button>
             </form>
-        { data.comments.length > 0 && data.comments.map((comment) => {
+        { data.postComments.length > 0 && data.postComments.map((comment) => {
             return (
                 <div key={comment._id}>
                     <h4 className='username clickable' onClick={() => {
