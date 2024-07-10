@@ -37,11 +37,17 @@ function Post() {
     const navigate = useNavigate();
     useEffect(() => {
         async function fetchPost() {
-            const response = await fetch(import.meta.env.VITE_SITEURL + `post/${params.postId}`, {
-                headers: {
-                    "Authorization": "Bearer " + token
-                },
-            })
+            let response;
+            if (token === null || token === undefined) {
+                response = await fetch(import.meta.env.VITE_SITEURL + `post/${params.postId}`, {
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                })
+            } else {
+                response = await fetch(import.meta.env.VITE_SITEURL + `post/${params.postId}`)
+            }
+            
             const data = await response.json()
             if (response.status >= 500) {
                 setErrors({message: "A server error has occurred. It's possible that the url isn't formatted correctly. Sending you back home..."});
@@ -91,7 +97,7 @@ function Post() {
                         <h4 className='username clickable' onClick={() => {
                                 navigate(`/user/${data.post.author._id}`);
                             }}>{data.post.author.username}</h4>
-                        <div>{format(new UTCDate(data.post.date), 'LL/dd/yy KK:mm a')} UTC</div>
+                        <div>Published on: {format(new UTCDate(data.post.date), 'LL/dd/yy KK:mm a')} UTC</div>
                         { data.post.lastUpdated && <div>Last Updated: {format(new UTCDate(data.post.lastUpdated), 'LL/dd/yy KK:mm a')} UTC</div> }
                         <p>{data.post.text}</p>
                     </section>
