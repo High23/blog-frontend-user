@@ -37,17 +37,11 @@ function Post() {
     const navigate = useNavigate();
     useEffect(() => {
         async function fetchPost() {
-            let response;
-            if (token === null || token === undefined) {
-                response = await fetch(import.meta.env.VITE_SITEURL + `post/${params.postId}`, {
-                    headers: {
-                        "Authorization": "Bearer " + token
-                    },
-                })
-            } else {
-                response = await fetch(import.meta.env.VITE_SITEURL + `post/${params.postId}`)
-            }
-            
+            const response = await fetch(import.meta.env.VITE_SITEURL + `post/${params.postId}`, {
+                headers: {
+                    "Authorization": "Bearer " + token
+                },
+            })
             const data = await response.json()
             if (response.status >= 500) {
                 setErrors({message: "A server error has occurred. It's possible that the url isn't formatted correctly. Sending you back home..."});
