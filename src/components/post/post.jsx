@@ -31,7 +31,7 @@ function DisplayPosts({posts}) {
 function Post() {
     const token = localStorage.getItem('token')
     const params = useParams()
-    const [data, setData] = useState({post: undefined, comments: undefined})
+    const [data, setData] = useState({post: undefined, postComments: undefined})
     const [refresh, setRefresh] = useState(0)
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
