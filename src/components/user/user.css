@@ -1,0 +1,7 @@
+.post-title {
+    cursor: pointer;
+}
+
+.post-title.clickable:hover{
+    color: blue;
+}
