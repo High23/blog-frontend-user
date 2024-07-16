@@ -39,7 +39,7 @@ export default function NavBar({token}) {
                     <Link to='/sign-up'>Sign Up</Link>
                 </> :
                 <>
-                    {((errors === undefined && currentUser !== null) && currentUser.author) && <Link to='/post/create'>Create a Post</Link>}
+                    {((errors === undefined && currentUser !== null) && currentUser.author) && <Link to='https://high-blog-frontend-author.netlify.app/'>CMS Site</Link>}
                     <Link to='/logout'>Log Out</Link>
                     <Link to='/user'>Profile</Link>
                 </>
