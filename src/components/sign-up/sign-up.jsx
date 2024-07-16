@@ -4,7 +4,7 @@ import NavBar from '../navbar/navbar'
 import './sign-up.css'
 
 export default function SignUp() {
-    const token = localStorage.getItem('token');
+    const [token, setToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
     useEffect(() => {
         if (token !== null) {

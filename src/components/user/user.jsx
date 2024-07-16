@@ -131,7 +131,6 @@ function EditForm({siteUrl, token, setToken, navigate, user}) {
                 </div>
                 <div>
                     <label htmlFor="authorCheckBox">Author: </label>
-                    {errors === 'Invalid password' && <div>{errors}</div>}
                     { user.author ? 
                     <>
                         <input type="checkbox" name="authorCheckBox" id="authorCheckBox" defaultChecked/>
@@ -150,7 +149,7 @@ function EditForm({siteUrl, token, setToken, navigate, user}) {
 export function User() {
     const [user, setUser] = useState(null)
     const params = useParams()
-    const token = localStorage.getItem('token');
+    const [token, setToken] = useState(localStorage.getItem('token'));
 
     useEffect(() => {
         async function fetchUser() {

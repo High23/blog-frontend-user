@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import NavBar from '../navbar/navbar'
 
 export default function LogIn() {
-    const token = localStorage.getItem('token');
+    const [token, setToken] = useState(localStorage.getItem('token'));
     const [status, setStatus] = useState(null);
     const siteUrl = import.meta.env.VITE_SITEURL
     const navigate = useNavigate()
