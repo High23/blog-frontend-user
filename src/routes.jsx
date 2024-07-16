@@ -4,7 +4,7 @@ import LogIn from "./components/login/login.jsx";
 import SignUp from "./components/sign-up/sign-up.jsx";
 import { CurrentUser, User, EditCurrentUser } from "./components/user/user.jsx";
 import LogOut from "./components/logout/logout.jsx";
-import { Post, CreatePost } from "./components/post/post.jsx";
+import { Post } from "./components/post/post.jsx";
 
 const routes = [
     {
@@ -40,11 +40,6 @@ const routes = [
     {
         path: "user/:userId",
         element: <User></User>,
-        errorElement: <ErrorPage></ErrorPage>,
-    },
-    {
-        path: "post/create",
-        element: <CreatePost></CreatePost>,
         errorElement: <ErrorPage></ErrorPage>,
     },
     {
